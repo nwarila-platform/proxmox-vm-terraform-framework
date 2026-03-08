@@ -1,0 +1,18 @@
+{
+  // Extensions That Provide Substancial When Working With The Repo
+  "recommendations": [
+    "HashiCorp.terraform",
+    "HashiCorp.HCL",
+    "redhat.vscode-yaml",
+    "zokugun.explicit-folding",
+
+    // Add language support for '.gitignore' files.
+    "codezombiech.gitignore"
+  ],
+  
+  // Extensions That Cause Problems With The Repo
+  "unwantedRecommendations": [
+    "mauve.terraform"
+  ]
+
+}

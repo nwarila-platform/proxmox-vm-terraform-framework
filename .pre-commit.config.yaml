@@ -1,0 +1,99 @@
+minimum_pre_commit_version: "4.0.0"
+default_stages:
+  - pre-commit
+  - pre-push
+
+repos:
+  # -------------------------------------------------------------------------- #
+  #  General file hygiene                                                      #
+  # -------------------------------------------------------------------------- #
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: [ "--maxkb=1024" ]
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-yaml
+        args: ["--allow-multiple-documents", "--unsafe"]
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+      - id: trailing-whitespace
+
+  # -------------------------------------------------------------------------- #
+  #  Secret detection                                                          #
+  # -------------------------------------------------------------------------- #
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.0
+    hooks:
+      - id: gitleaks
+        name: "gitleaks — detect hardcoded secrets"
+
+  # -------------------------------------------------------------------------- #
+  #  Terraform formatting & validation                                         #
+  # -------------------------------------------------------------------------- #
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.99.1
+    hooks:
+      - id: terraform_fmt
+        name: "terraform fmt — enforce canonical formatting"
+
+      - id: terraform_validate
+        name: "terraform validate — syntax & internal consistency"
+        args:
+          - --hook-config=--retry-once-with-cleanup=true
+          - --tf-init-args=-backend=false
+
+      - id: terraform_tflint
+        name: "tflint — lint Terraform files"
+        args:
+          - --args=--config=__GIT_WORKING_DIR__/.config/.tflint.hcl
+
+      - id: terraform_trivy
+        name: "trivy — scan for misconfigurations & CVEs"
+        args:
+          - --args=--severity=HIGH,CRITICAL
+          - --args=--skip-dirs=.terraform
+
+      - id: terraform_docs
+        name: "terraform-docs — auto-generate module documentation"
+        args:
+          - --hook-config=--path-to-file=docs/TERRAFORM.md
+          - --hook-config=--add-to-existing-file=true
+          - --hook-config=--create-file-if-not-exist=true
+          - --args=--config=.config/.terraform-docs.yml
+
+  # -------------------------------------------------------------------------- #
+  #  YAML linting                                                              #
+  # -------------------------------------------------------------------------- #
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.37.0
+    hooks:
+      - id: yamllint
+        name: "yamllint — lint YAML files"
+        args: ["-c", ".config/.yamllint.yml"]
+
+  # -------------------------------------------------------------------------- #
+  #  Markdown linting                                                          #
+  # -------------------------------------------------------------------------- #
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.44.0
+    hooks:
+      - id: markdownlint
+        name: "markdownlint — lint Markdown files"
+        args: ["--config", ".config/.markdownlint.json"]
+
+  # -------------------------------------------------------------------------- #
+  #  Commit message linting (Conventional Commits)                             #
+  # -------------------------------------------------------------------------- #
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.0.0
+    hooks:
+      - id: conventional-pre-commit
+        name: "conventional-commits — enforce commit message format"
+        stages: [commit-msg]
+        args: ["feat", "fix", "ci", "docs", "refactor", "test", "chore", "security"]

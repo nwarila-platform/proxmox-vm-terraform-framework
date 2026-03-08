@@ -1,0 +1,28 @@
+name: Proxmox Terraform Validation
+description: Validate Terraform formatting and configuration in the framework repository
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check Terraform CLI
+      shell: bash
+      working-directory: "${{ github.workspace }}"
+      run: |
+        set -euo pipefail
+
+        TerraformCommand="$(command -v terraform)"
+        echo "Using Terraform executable: ${TerraformCommand}"
+
+    - name: Check Terraform formatting
+      shell: bash
+      working-directory: "${{ github.workspace }}/terraform"
+      run: |
+        set -euo pipefail
+        terraform fmt -check -diff -recursive -no-color .
+
+    - name: Initialize and validate Terraform directories
+      shell: bash
+      working-directory: "${{ github.workspace }}/terraform"
+      run: |
+        terraform init -backend=false -input=false -no-color
+        terraform validate -no-color

@@ -1,0 +1,126 @@
+#region ------ [ Header ] -------------------------------------------------------------------- #
+#  /$$   /$$ /$$      /$$                     /$$ /$$                                          #
+# | $$$ | $$| $$  /$ | $$                    |__/| $$                                          #
+# | $$$$| $$| $$ /$$$| $$  /$$$$$$   /$$$$$$  /$$| $$  /$$$$$$                                 #
+# | $$ $$ $$| $$/$$ $$ $$ |____  $$ /$$__  $$| $$| $$ |____  $$                                #
+# | $$  $$$$| $$$$_  $$$$  /$$$$$$$| $$  \__/| $$| $$  /$$$$$$$                                #
+# | $$\  $$$| $$$/ \  $$$ /$$__  $$| $$      | $$| $$ /$$__  $$                                #
+# | $$ \  $$| $$/   \  $$|  $$$$$$$| $$      | $$| $$|  $$$$$$$                                #
+# |__/  \__/|__/     \__/ \_______/|__/      |__/|__/ \_______/                                #
+# --- [ DESCRIPTION ] ------------------------------------------------------------------------ #
+#%   A '.gitignore' file specifies intentionally untracked files that Git should ignore       %#
+#%   It helps ensure sensitive or irrelevant files (state, caches, etc.) are not committed.   %#
+#%                                                                                            %#
+#% ADDITIONAL INFORMATION                                                                     %#
+#%   Official Git Documentation: https://git-scm.com/docs/gitignore                           %#
+#%                                                                                            %#
+#endregion --- [ Header ] -------------------------------------------------------------------- #
+
+# By default, ignore everything.
+**
+
+# -------------------------------------------------------------------------- #
+#  Repository root                                                            #
+# -------------------------------------------------------------------------- #
+!.editorconfig
+!.gitattributes
+!.gitignore
+!.pre-commit.config.yaml
+!.release-please-manifest.json
+!CHANGELOG.md
+!CODE_OF_CONDUCT.md
+!CONTRIBUTING.md
+!LICENSE
+!mkdocs.yml
+!README.md
+!release-please-config.json
+!SECURITY.md
+!SUPPORT.md
+
+# -------------------------------------------------------------------------- #
+#  Linter & tool configuration                                               #
+# -------------------------------------------------------------------------- #
+!.config/
+!.config/.markdownlint.json
+!.config/.terraform-docs.yml
+!.config/.tflint.hcl
+!.config/.yamllint.yaml
+
+# -------------------------------------------------------------------------- #
+#  Devcontainer                                                               #
+# -------------------------------------------------------------------------- #
+!.devcontainer/
+!.devcontainer/devcontainer.json
+!.devcontainer/Dockerfile
+
+# -------------------------------------------------------------------------- #
+#  GitHub — actions, workflows, templates, and settings                      #
+# -------------------------------------------------------------------------- #
+!.github/
+!.github/actions/
+!.github/actions/terraform-bash/
+!.github/actions/terraform-bash/action.yml
+!.github/actions/terraform-powershell/
+!.github/actions/terraform-powershell/action.yaml
+!.github/ISSUE_TEMPLATE/
+!.github/ISSUE_TEMPLATE/bug_report.yml
+!.github/ISSUE_TEMPLATE/config.yml
+!.github/ISSUE_TEMPLATE/feature_request.yml
+!.github/CODEOWNERS
+!.github/dependabot.yml
+!.github/FUNDING.yml
+!.github/pull_request_template.md
+!.github/workflows/
+!.github/workflows/codeql.yaml
+!.github/workflows/pages.yaml
+!.github/workflows/release-please.yaml
+!.github/workflows/security.yaml
+!.github/workflows/terraform.yaml
+
+# -------------------------------------------------------------------------- #
+#  VSCode workspace                                                           #
+# -------------------------------------------------------------------------- #
+!.vscode/
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# -------------------------------------------------------------------------- #
+#  Documentation (MkDocs source)                                             #
+# -------------------------------------------------------------------------- #
+!docs/
+!docs/architecture.md
+!docs/getting-started.md
+!docs/index.md
+!docs/TERRAFORM.md
+!docs/TERRAFORM_HEADER.md
+
+# -------------------------------------------------------------------------- #
+#  Examples                                                                   #
+# -------------------------------------------------------------------------- #
+!examples/
+!examples/single-vm/
+!examples/single-vm/terraform.tfvars.example
+!examples/multi-vm/
+!examples/multi-vm/terraform.tfvars.example
+
+# -------------------------------------------------------------------------- #
+#  Python requirements (Dependabot-monitored)                                #
+# -------------------------------------------------------------------------- #
+!requirements/
+!requirements/devcontainer.txt
+!requirements/docs.txt
+
+# -------------------------------------------------------------------------- #
+#  Terraform                                                                  #
+# -------------------------------------------------------------------------- #
+!terraform/
+!terraform/backend.tf
+!terraform/data.tf
+!terraform/locals.tf
+!terraform/outputs.tf
+!terraform/providers.tf
+!terraform/resources.tf
+!terraform/variables.tf
+!terraform/versions.tf

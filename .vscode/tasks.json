@@ -1,0 +1,103 @@
+{
+  // ======================================================================== //
+  //  VS Code Tasks — Quick-access Terraform operations                       //
+  //                                                                          //
+  //  Run via: Terminal > Run Task... (Ctrl+Shift+P > Tasks: Run Task)        //
+  // ======================================================================== //
+  "version": "2.0.0",
+  "tasks": [
+    // ---- Terraform Core ------------------------------------------------- //
+    {
+      "label": "Terraform: Format",
+      "type": "shell",
+      "command": "terraform fmt -recursive -diff",
+      "options": { "cwd": "${workspaceFolder}/terraform" },
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Terraform: Format Check",
+      "type": "shell",
+      "command": "terraform fmt -check -recursive -diff",
+      "options": { "cwd": "${workspaceFolder}/terraform" },
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Terraform: Init",
+      "type": "shell",
+      "command": "terraform init -backend=false -input=false",
+      "options": { "cwd": "${workspaceFolder}/terraform" },
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Terraform: Validate",
+      "type": "shell",
+      "command": "terraform validate",
+      "options": { "cwd": "${workspaceFolder}/terraform" },
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Terraform: Plan",
+      "type": "shell",
+      "command": "terraform plan -input=false",
+      "options": { "cwd": "${workspaceFolder}/terraform" },
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    // ---- Linting & Security --------------------------------------------- //
+    {
+      "label": "TFLint: Run",
+      "type": "shell",
+      "command": "tflint --config=${workspaceFolder}/.tflint.hcl --format=compact",
+      "options": { "cwd": "${workspaceFolder}/terraform" },
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Trivy: Security Scan",
+      "type": "shell",
+      "command": "trivy config --severity HIGH,CRITICAL terraform/",
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    // ---- Pre-Commit ----------------------------------------------------- //
+    {
+      "label": "Pre-Commit: Run All",
+      "type": "shell",
+      "command": "pre-commit run --all-files",
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    // ---- Composite ------------------------------------------------------ //
+    {
+      "label": "Full Validation (fmt + init + validate + lint + scan)",
+      "dependsOn": [
+        "Terraform: Format Check",
+        "Terraform: Init",
+        "Terraform: Validate",
+        "TFLint: Run",
+        "Trivy: Security Scan"
+      ],
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    }
+  ]
+}

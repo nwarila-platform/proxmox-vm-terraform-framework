@@ -1,0 +1,33 @@
+name: Proxmox Terraform Validation
+description: Validate Terraform formatting and configuration in the framework repository
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check Terraform CLI
+      shell: pwsh
+      working-directory: ${{ github.workspace }}
+      run: |
+        Set-StrictMode -Version Latest
+        $ErrorActionPreference = 'Stop'
+
+        Set-Variable -Name:'TerraformCommand' -Value:(
+           Get-Command -Name:'terraform' -ErrorAction:'Stop'
+        )
+        
+        Write-Host "Using Terraform executable: $($TerraformCommand.Source)"
+
+    - name: Check Terraform formatting
+      shell: pwsh
+      working-directory: ${{ github.workspace }}
+      run: |
+        Set-StrictMode -Version Latest
+        $ErrorActionPreference = 'Stop'
+        terraform fmt -check -diff -recursive -no-color .
+
+    - name: Initialize and validate Terraform directories
+      shell: pwsh
+      working-directory: ${{ github.workspace }}
+      run: |
+        terraform init -backend=false -input=false -no-color
+        terraform validate -no-color
