@@ -211,16 +211,50 @@ resource "proxmox_virtual_environment_vm" "virtual_machine" {
     }
   }
 
-  # dynamic "initialization" {
-  #   for_each = each.value["initialization"][*]
-  #   iterator = initialization
+  dynamic "initialization" {
+    for_each = each.value["initialization"][*]
+    iterator = initialization
 
-  #   content {
-  #     datastore_id =
-  #     interface =
-  #   }
-  # }
-  # initialization      = each.value["initialization"]
+    content {
+      datastore_id = initialization.value["datastore_id"]
+      interface    = initialization.value["interface"]
+
+      dynamic "dns" {
+        for_each = (initialization.value["dns"] != null || initialization.value["servers"] != null) ? [1] : []
+
+        content {
+          domain  = initialization.value["dns"]
+          servers = initialization.value["servers"]
+        }
+      }
+
+      dynamic "ip_config" {
+        for_each = [
+          for nd in coalesce(each.value["network_devices"], []) :
+          nd if nd["ipv4_address"] != null || nd["ipv4_gateway"] != null
+        ]
+        iterator = network_device
+
+        content {
+          ipv4 {
+            address = network_device.value["ipv4_address"]
+            gateway = network_device.value["ipv4_gateway"]
+          }
+        }
+      }
+
+      dynamic "user_account" {
+        for_each = initialization.value["user_account"][*]
+        iterator = user_account
+
+        content {
+          keys     = user_account.value["keys"] != null ? toset([user_account.value["keys"]]) : null
+          password = user_account.value["password"]
+          username = user_account.value["username"]
+        }
+      }
+    }
+  }
 
   dynamic "memory" {
     for_each = each.value["memory"][*]
