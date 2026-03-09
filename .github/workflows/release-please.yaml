@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Run release-please
-        uses: googleapis/release-please-action@a02a34c4d625b9a4a6d26de46e8e4ea2b7fec2bc # v4.2.0
+        uses: googleapis/release-please-action@v4
         with:
           release-type: simple
           target-branch: main
