@@ -170,19 +170,20 @@ variable "all_systems" {
       network_devices = optional(
         list(
           object({
-            bridge       = optional(string, "vmbr0")
-            disconnected = optional(bool, false)
-            enabled      = optional(bool, true)
-            firewall     = optional(bool, false)
-            ipv4_address = optional(string)
-            ipv4_gateway = optional(string)
-            mac_address  = optional(string)
-            model        = optional(string, "virtio")
-            mtu          = optional(number)
-            queues       = optional(number)
-            rate_limit   = optional(number)
-            trunks       = optional(string)
-            vlan_id      = optional(number)
+            bridge             = optional(string, "vmbr0")
+            disconnected       = optional(bool, false)
+            enabled            = optional(bool, true)
+            firewall           = optional(bool, false)
+            ipv4_address       = optional(string) # Bare IPv4 address, e.g. "10.69.12.24"
+            ipv4_prefix_length = optional(number) # Subnet prefix length, e.g. 24
+            ipv4_gateway       = optional(string) # Gateway address, e.g. "10.69.12.1"
+            mac_address        = optional(string)
+            model              = optional(string, "virtio")
+            mtu                = optional(number)
+            queues             = optional(number)
+            rate_limit         = optional(number)
+            trunks             = optional(string)
+            vlan_id            = optional(number)
           })
         )
       )
