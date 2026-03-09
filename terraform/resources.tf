@@ -248,13 +248,16 @@ resource "proxmox_virtual_environment_vm" "virtual_machine" {
       }
 
       dynamic "user_account" {
-        for_each = initialization.value["user_account"][*]
-        iterator = user_account
+        for_each = (
+          var.proxmox_cloud_init_user_name != null ||
+          var.proxmox_cloud_init_user_password != null ||
+          var.proxmox_cloud_init_user_public_key != null
+        ) ? [1] : []
 
         content {
-          keys     = user_account.value["keys"] != null ? toset([user_account.value["keys"]]) : null
-          password = user_account.value["password"]
-          username = user_account.value["username"]
+          username = var.proxmox_cloud_init_user_name
+          password = var.proxmox_cloud_init_user_password
+          keys     = var.proxmox_cloud_init_user_public_key != null ? toset([var.proxmox_cloud_init_user_public_key]) : null
         }
       }
     }
