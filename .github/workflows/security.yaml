@@ -49,7 +49,7 @@ jobs:
           category: trivy
 
       - name: Upload Trivy SARIF as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: trivy-sarif
@@ -86,7 +86,7 @@ jobs:
           category: checkov
 
       - name: Upload Checkov SARIF as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: checkov-sarif
