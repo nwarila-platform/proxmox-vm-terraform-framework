@@ -237,7 +237,11 @@ resource "proxmox_virtual_environment_vm" "virtual_machine" {
 
         content {
           ipv4 {
-            address = network_device.value["ipv4_address"]
+            address = (
+              network_device.value["ipv4_address"] != null && network_device.value["ipv4_prefix_length"] != null
+              ? "${network_device.value["ipv4_address"]}/${network_device.value["ipv4_prefix_length"]}"
+              : network_device.value["ipv4_address"]
+            )
             gateway = network_device.value["ipv4_gateway"]
           }
         }
