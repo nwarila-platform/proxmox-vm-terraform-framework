@@ -22,6 +22,27 @@ variable "proxmox_skip_tls_verify" {
   description = "Skip TLS certificate verification when connecting to the Proxmox API. Defaults to false (secure). Set to true only in lab environments with self-signed certificates."
 }
 
+variable "proxmox_cloud_init_user_name" {
+  type        = string
+  default     = null
+  sensitive   = true
+  description = "Username for the cloud-init default user account provisioned on cloned VMs. Inject via GitHub Actions secret — do not store in tfvars."
+}
+
+variable "proxmox_cloud_init_user_password" {
+  type        = string
+  default     = null
+  sensitive   = true
+  description = "Plain text password for the cloud-init default user account. Proxmox hashes it internally before passing to cloud-init — do not pre-hash. Inject via GitHub Actions secret — do not store in tfvars."
+}
+
+variable "proxmox_cloud_init_user_public_key" {
+  type        = string
+  default     = null
+  sensitive   = true
+  description = "SSH public key to authorize for the cloud-init default user account. Inject via GitHub Actions secret — do not store in tfvars."
+}
+
 #endregion --- [ Promox Virtual Environment Systems Variable Definitions ] -------------------- #
 
 variable "all_systems" {
@@ -144,13 +165,9 @@ variable "all_systems" {
           servers      = optional(list(string))
           interface    = optional(string, "ide2")
           # ip_config = <! Note: Values defined in 'network_devices' !>
-          user_account = optional(
-            object({
-              keys     = optional(string)
-              password = optional(string)
-              username = optional(string)
-            })
-          )
+          # user_account credentials are injected via top-level sensitive variables
+          # (proxmox_cloud_init_user_name / _password / _public_key) sourced from
+          # GitHub Actions secrets — not accepted here to prevent plaintext in tfvars.
         })
       )
       keyboard_layout = optional(string, "en-us")
