@@ -3,7 +3,7 @@ name: Release Please
 on:
   push:
     branches:
-      - PROD
+      - main
 
 permissions:
   contents: write
@@ -19,4 +19,4 @@ jobs:
         uses: googleapis/release-please-action@a02a34c4d625b9a4a6d26de46e8e4ea2b7fec2bc # v4.2.0
         with:
           release-type: simple
-          target-branch: PROD
+          target-branch: main

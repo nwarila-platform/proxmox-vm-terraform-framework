@@ -1,11 +1,11 @@
 # proxmox-vm-terraform-framework
 
-[![Terraform Validator](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/terraform.yaml/badge.svg?branch=PROD)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/terraform.yaml)
-[![Deploy Docs](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/pages.yaml/badge.svg?branch=PROD)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/pages.yaml)
-[![Security Scan](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/security.yaml/badge.svg?branch=PROD)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/security.yaml)
+[![Terraform Validator](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/terraform.yaml/badge.svg?branch=main)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/terraform.yaml)
+[![Deploy Docs](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/pages.yaml/badge.svg?branch=main)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/pages.yaml)
+[![Security Scan](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/security.yaml/badge.svg?branch=main)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/security.yaml)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/blob/PROD/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/blob/main/LICENSE)
 
 A structured, production-grade Terraform framework for managing [Proxmox VE](https://www.proxmox.com/en/proxmox-virtual-environment/overview)
 infrastructure. Designed for repeatability, safety, and developer velocity — with multi-layer validation,
@@ -36,7 +36,7 @@ automated documentation, and full CI/CD integration out of the box.
     ---
 
     `terraform-docs` regenerates the [Module Reference](TERRAFORM.md) on every commit.
-    This site is rebuilt and deployed automatically on every push to `PROD`.
+    This site is rebuilt and deployed automatically on every push to `main`.
 
 -   :material-robot:{ .lg .middle } **Fully automated**
 

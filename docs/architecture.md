@@ -4,7 +4,7 @@
 
 This framework follows a **GitOps model** — the repository is the single source of truth for both
 infrastructure definition and the toolchain that validates it. No infrastructure change can reach
-`PROD` without passing every automated gate.
+`main` without passing every automated gate.
 
 ---
 
@@ -27,7 +27,7 @@ flowchart TD
         H7["conventional-pre-commit\ncommit message format"]
     end
 
-    subgraph github["GitHub — PROD branch"]
+    subgraph github["GitHub — main branch"]
         direction TB
         PUSH["git push"]
 
@@ -86,7 +86,7 @@ sequenceDiagram
     alt hooks fail
         DC-->>Dev: Blocked — fix issues
     else hooks pass
-        DC->>GH: git push origin PROD
+        DC->>GH: git push origin main
     end
 
     GH->>CI: Trigger workflows (parallel)

@@ -1,9 +1,9 @@
 # proxmox-vm-terraform-framework
 
 <!-- Badges -->
-[![Terraform Validator](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/terraform.yaml/badge.svg?branch=PROD)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/terraform.yaml)
-[![Deploy Docs](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/pages.yaml/badge.svg?branch=PROD)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/pages.yaml)
-[![Security Scan](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/security.yaml/badge.svg?branch=PROD)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/security.yaml)
+[![Terraform Validator](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/terraform.yaml/badge.svg?branch=main)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/terraform.yaml)
+[![Deploy Docs](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/pages.yaml/badge.svg?branch=main)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/pages.yaml)
+[![Security Scan](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/security.yaml/badge.svg?branch=main)](https://github.com/nwarila-platform/proxmox-vm-terraform-framework/actions/workflows/security.yaml)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -193,7 +193,7 @@ Run it with `Ctrl+Shift+B`.
 
 ### Terraform Validator (`terraform.yaml`)
 
-Triggers on push to `PROD` when `.tf` files or the workflow itself change. Runs on self-hosted runners (supports both Linux and Windows).
+Triggers on push to `main` when `.tf` files or the workflow itself change. Runs on self-hosted runners (supports both Linux and Windows).
 
 | Step | Action |
 |---|---|
@@ -204,7 +204,7 @@ Triggers on push to `PROD` when `.tf` files or the workflow itself change. Runs 
 
 ### Release Please (`release-please.yaml`)
 
-Triggers on push to `PROD`. Parses [Conventional Commits](https://www.conventionalcommits.org/) to:
+Triggers on push to `main`. Parses [Conventional Commits](https://www.conventionalcommits.org/) to:
 
 - Auto-bump semantic version
 - Generate and maintain `CHANGELOG.md`
@@ -212,7 +212,7 @@ Triggers on push to `PROD`. Parses [Conventional Commits](https://www.convention
 
 ### CodeQL (`codeql.yaml`)
 
-Weekly SAST scan + triggered on every push to `PROD`. Scans for security vulnerabilities and code quality issues.
+Weekly SAST scan + triggered on every push to `main`. Scans for security vulnerabilities and code quality issues.
 
 ---
 

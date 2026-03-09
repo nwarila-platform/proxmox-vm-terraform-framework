@@ -3,10 +3,10 @@ name: CodeQL Analysis
 on:
   push:
     branches:
-      - PROD
+      - main
   pull_request:
     branches:
-      - PROD
+      - main
   schedule:
     - cron: "30 6 * * 0" # Weekly on Sunday at 06:30 UTC
 

@@ -3,10 +3,10 @@ name: Security Scanning
 on:
   push:
     branches:
-      - PROD
+      - main
   pull_request:
     branches:
-      - PROD
+      - main
   schedule:
     - cron: "0 8 * * 1" # Weekly — Monday 08:00 UTC
   workflow_dispatch:

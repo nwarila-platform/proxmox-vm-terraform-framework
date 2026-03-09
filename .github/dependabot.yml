@@ -6,32 +6,32 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    target-branch: "PROD"
+    target-branch: "main"
 
   # Terraform — provider and module versions
   - package-ecosystem: "terraform"
     directory: "/terraform"
     schedule:
       interval: "daily"
-    target-branch: "PROD"
+    target-branch: "main"
 
   # Devcontainer — feature versions in devcontainer.json
   - package-ecosystem: "devcontainers"
     directory: "/"
     schedule:
       interval: "weekly"
-    target-branch: "PROD"
+    target-branch: "main"
 
   # Docker — base image in .devcontainer/Dockerfile
   - package-ecosystem: "docker"
     directory: "/.devcontainer"
     schedule:
       interval: "weekly"
-    target-branch: "PROD"
+    target-branch: "main"
 
   # pip — docs build dependencies (mkdocs-material, etc.)
   - package-ecosystem: "pip"
     directory: "/requirements"
     schedule:
       interval: "weekly"
-    target-branch: "PROD"
+    target-branch: "main"
