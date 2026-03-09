@@ -18,8 +18,8 @@ variable "proxmox_api_token_secret" {
 
 variable "proxmox_skip_tls_verify" {
   type        = bool
-  default     = true
-  description = "Whether to verify TLS certificates when connecting to the Proxmox API"
+  default     = false
+  description = "Skip TLS certificate verification when connecting to the Proxmox API. Defaults to false (secure). Set to true only in lab environments with self-signed certificates."
 }
 
 #endregion --- [ Promox Virtual Environment Systems Variable Definitions ] -------------------- #
