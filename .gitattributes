@@ -109,7 +109,6 @@ requirements/   linguist-detectable=false
 .devcontainer/              export-ignore
 .github/                    export-ignore
 .vscode/                    export-ignore
-.claude/                    export-ignore
 .gitattributes              export-ignore
 .gitignore                  export-ignore
 .pre-commit.config.yaml     export-ignore
