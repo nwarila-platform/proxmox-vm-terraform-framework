@@ -66,13 +66,21 @@
 !.github/dependabot.yml
 !.github/FUNDING.yml
 !.github/pull_request_template.md
+!.github/renovate.json5
 !.github/workflows/
+!.github/renovate.json5
 !.github/workflows/codeql.yaml
+!.github/renovate.json5
 !.github/workflows/pages.yaml
+!.github/renovate.json5
 !.github/workflows/release-please.yaml
+!.github/renovate.json5
 !.github/workflows/security.yaml
+!.github/renovate.json5
 !.github/workflows/template-sync.yaml
+!.github/renovate.json5
 !.github/workflows/pr-validation.yaml
+!.github/renovate.json5
 !.github/workflows/terraform.yaml
 
 # -------------------------------------------------------------------------- #
