@@ -121,3 +121,11 @@
 !terraform/resources.tf
 !terraform/variables.tf
 !terraform/versions.tf
+
+# Additions for terraform-template sync (Makefile, configs, helpers).
+!.terraform-docs.yml
+!.tflint.hcl
+!.pre-commit-config.yaml
+!.markdownlint-cli2.jsonc
+!Makefile
+!tools/check_docs_layout.py
