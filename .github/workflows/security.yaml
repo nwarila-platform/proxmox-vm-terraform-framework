@@ -1,111 +1,26 @@
-name: Security Scanning
+name: Security Scan
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
+  merge_group:
   schedule:
-    - cron: "0 8 * * 1" # Weekly — Monday 08:00 UTC
+    - cron: "0 8 * * 1"
   workflow_dispatch:
 
-permissions:
-  contents: read
-  security-events: write
-  actions: read
+permissions: {}
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  trivy:
-    name: Trivy
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+  scan:
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    uses: NWarila/terraform-template/.github/workflows/reusable-iac-security.yaml@7f4e8c486e88d64bfc868d27ff356bd0e1355549
 
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-
-      - name: Run Trivy — filesystem scan (SARIF)
-        uses: aquasecurity/trivy-action@0.35.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          format: sarif
-          output: trivy.sarif
-          severity: HIGH,CRITICAL
-          scanners: misconfig,secret
-          skip-dirs: .terraform
-          exit-code: "0"
-
-      - name: Upload Trivy results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: trivy.sarif
-          category: trivy
-
-      - name: Upload Trivy SARIF as artifact
-        uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name: trivy-sarif
-          path: trivy.sarif
-          retention-days: 30
-
-  checkov:
-    name: Checkov
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-
-      - name: Run Checkov — Terraform IaC scan
-        uses: bridgecrewio/checkov-action@v12
-        with:
-          directory: terraform/
-          framework: terraform
-          output_format: cli,sarif
-          output_file_path: console,checkov.sarif
-          soft_fail: true
-          download_external_modules: false
-
-      - name: Upload Checkov results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: checkov.sarif
-          category: checkov
-
-      - name: Upload Checkov SARIF as artifact
-        uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name: checkov-sarif
-          path: checkov.sarif
-          retention-days: 30
-
-  gitleaks:
-    name: Gitleaks
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Run Gitleaks — secret detection
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
