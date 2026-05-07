@@ -78,6 +78,7 @@
 !.github/workflows/security.yaml
 !.github/renovate.json5
 !.github/workflows/template-sync.yaml
+!.github/workflows/scorecard.yaml
 !.github/renovate.json5
 !.github/workflows/pr-validation.yaml
 !.github/renovate.json5
