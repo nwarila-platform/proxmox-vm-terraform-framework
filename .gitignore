@@ -96,11 +96,6 @@
 #  Documentation (MkDocs source)                                             #
 # -------------------------------------------------------------------------- #
 !docs/
-!docs/architecture.md
-!docs/getting-started.md
-!docs/index.md
-!docs/TERRAFORM.md
-!docs/TERRAFORM_HEADER.md
 
 # -------------------------------------------------------------------------- #
 #  Examples                                                                   #
@@ -160,3 +155,5 @@
 !policies/opa/
 !policies/opa/.gitkeep
 !.github/PULL_REQUEST_TEMPLATE.md
+# Diatáxis docs migration
+!docs/how-to/getting-started.md
