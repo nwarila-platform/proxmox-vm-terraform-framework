@@ -28,14 +28,10 @@
 !.pre-commit.config.yaml
 !.release-please-manifest.json
 !CHANGELOG.md
-!CODE_OF_CONDUCT.md
-!CONTRIBUTING.md
 !LICENSE
 !mkdocs.yml
 !README.md
 !release-please-config.json
-!SECURITY.md
-!SUPPORT.md
 
 # -------------------------------------------------------------------------- #
 #  Linter & tool configuration                                               #
