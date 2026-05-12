@@ -43,6 +43,17 @@ variable "proxmox_cloud_init_user_public_key" {
   description = "SSH public key to authorize for the cloud-init default user account. Inject via GitHub Actions secret — do not store in tfvars."
 }
 
+variable "persistent_disk_vm_id_offset" {
+  type        = number
+  default     = 10000
+  description = "Offset added to each workload VM ID when deriving the protected owner VM ID for disks with persist_disk=true."
+
+  validation {
+    condition     = var.persistent_disk_vm_id_offset > 0
+    error_message = "persistent_disk_vm_id_offset must be greater than zero."
+  }
+}
+
 #endregion --- [ Promox Virtual Environment Systems Variable Definitions ] -------------------- #
 
 variable "all_systems" {
@@ -114,26 +125,28 @@ variable "all_systems" {
           units      = optional(number, 1024)
         })
       )
-      description = optional(string)
+      description                          = optional(string)
+      delete_unreferenced_disks_on_destroy = optional(bool)
       disks = optional(
         list(
           object({
-            aio          = optional(string, "io_uring")
-            backup       = optional(bool, true)
-            cache        = optional(string, "none")
-            datastore_id = optional(string, "nvme-pool")
-            discard      = optional(string, "ignore")
-            file_format  = optional(string, "qcow2")
-            file_id      = optional(string)
-            import_from  = optional(string)
-            interface    = optional(string)
-            iothread     = optional(bool, false)
-            replicate    = optional(bool, true)
-            serial       = optional(string)
-            size         = optional(number, 8)
-            speed        = optional(number)
-            ssd          = optional(bool, false)
-            # path_in_datastore = optional(string)
+            aio               = optional(string, "io_uring")
+            backup            = optional(bool, true)
+            cache             = optional(string, "none")
+            datastore_id      = optional(string, "nvme-pool")
+            discard           = optional(string, "ignore")
+            file_format       = optional(string, "qcow2")
+            file_id           = optional(string)
+            import_from       = optional(string)
+            interface         = optional(string)
+            iothread          = optional(bool, false)
+            path_in_datastore = optional(string)
+            persist_disk      = optional(bool, false)
+            replicate         = optional(bool, true)
+            serial            = optional(string)
+            size              = optional(number, 8)
+            speed             = optional(number)
+            ssd               = optional(bool, false)
           })
         )
       )
@@ -214,11 +227,14 @@ variable "all_systems" {
           policy    = optional(string)
         })
       )
-      on_boot             = optional(bool, true)
-      operating_system    = optional(string)
-      protection          = optional(bool, false)
-      reboot              = optional(bool, false)
-      reboot_after_update = optional(bool, true)
+      on_boot                 = optional(bool, true)
+      operating_system        = optional(string)
+      persistent_disk_vm_id   = optional(number)
+      persistent_disk_vm_name = optional(string)
+      protection              = optional(bool, false)
+      purge_on_destroy        = optional(bool)
+      reboot                  = optional(bool, false)
+      reboot_after_update     = optional(bool, true)
       rng = optional(
         object({
           max_bytes = optional(number, 1024)

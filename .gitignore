@@ -139,6 +139,7 @@
 # Contract files (seeded by seed_consumer.py)
 !terraform/tests/
 !terraform/tests/.gitkeep
+!terraform/tests/*.tftest.hcl
 !docs/README.md
 !docs/explanation/
 !docs/explanation/architecture.md
