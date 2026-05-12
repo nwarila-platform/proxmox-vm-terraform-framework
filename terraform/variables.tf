@@ -139,6 +139,7 @@ variable "all_systems" {
             file_id           = optional(string)
             import_from       = optional(string)
             interface         = optional(string)
+            attach_interface  = optional(string)
             iothread          = optional(bool, false)
             path_in_datastore = optional(string)
             persist_disk      = optional(bool, false)
