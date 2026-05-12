@@ -1,3 +1,50 @@
+resource "proxmox_virtual_environment_vm" "persistent_disk_owner" {
+  for_each = local.persistent_disk_owners
+
+  name        = each.value["name"]
+  description = "Persistent disk owner for ${each.key}. Do not start this VM."
+  node_name   = each.value["node_name"]
+  pool_id     = each.value["pool_id"]
+  vm_id       = each.value["vm_id"]
+
+  delete_unreferenced_disks_on_destroy = false
+  on_boot                              = false
+  protection                           = true
+  purge_on_destroy                     = false
+  scsi_hardware                        = each.value["scsi_hardware"]
+  started                              = false
+  stop_on_destroy                      = true
+  tags                                 = each.value["tags"]
+
+  dynamic "disk" {
+    for_each = coalesce(each.value["disks"], [])
+    iterator = disk
+
+    content {
+      aio               = disk.value["aio"]
+      backup            = disk.value["backup"]
+      cache             = disk.value["cache"]
+      datastore_id      = disk.value["datastore_id"]
+      discard           = disk.value["discard"]
+      file_format       = disk.value["file_format"]
+      file_id           = disk.value["file_id"]
+      import_from       = disk.value["import_from"]
+      interface         = disk.value["interface"]
+      iothread          = disk.value["iothread"]
+      path_in_datastore = disk.value["path_in_datastore"]
+      replicate         = disk.value["replicate"]
+      serial            = disk.value["serial"]
+      size              = disk.value["size"]
+      # speed           = disk.value["speed"]
+      ssd = disk.value["ssd"]
+    }
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "proxmox_virtual_environment_vm" "virtual_machine" {
   for_each = local.virtual_machines
 
@@ -22,10 +69,12 @@ resource "proxmox_virtual_environment_vm" "virtual_machine" {
   scsi_hardware       = each.value["scsi_hardware"]
   # serial_device       = <! Note: Is 'dynamic' object located below !>
   # smbios              = each.value["smbios"]
-  started         = each.value["started"]
-  stop_on_destroy = each.value["stop_on_destroy"]
-  tablet_device   = each.value["tablet_device"]
-  tags            = each.value["tags"]
+  delete_unreferenced_disks_on_destroy = each.value["delete_unreferenced_disks_on_destroy"]
+  purge_on_destroy                     = each.value["purge_on_destroy"]
+  started                              = each.value["started"]
+  stop_on_destroy                      = each.value["stop_on_destroy"]
+  tablet_device                        = each.value["tablet_device"]
+  tags                                 = each.value["tags"]
   # template            = <! Note: We never create templates directly !>
   timeout_clone       = each.value["timeout_clone"]
   timeout_create      = each.value["timeout_create"]
@@ -44,21 +93,44 @@ resource "proxmox_virtual_environment_vm" "virtual_machine" {
     iterator = disk
 
     content {
-      aio          = disk.value["aio"]
-      backup       = disk.value["backup"]
-      cache        = disk.value["cache"]
-      datastore_id = disk.value["datastore_id"]
-      discard      = disk.value["discard"]
-      file_format  = disk.value["file_format"]
-      file_id      = disk.value["file_id"]
-      import_from  = disk.value["import_from"]
-      interface    = disk.value["interface"]
-      iothread     = disk.value["iothread"]
-      replicate    = disk.value["replicate"]
-      serial       = disk.value["serial"]
-      size         = disk.value["size"]
+      aio               = disk.value["aio"]
+      backup            = disk.value["backup"]
+      cache             = disk.value["cache"]
+      datastore_id      = disk.value["datastore_id"]
+      discard           = disk.value["discard"]
+      file_format       = disk.value["file_format"]
+      file_id           = disk.value["file_id"]
+      import_from       = disk.value["import_from"]
+      interface         = disk.value["interface"]
+      iothread          = disk.value["iothread"]
+      path_in_datastore = disk.value["path_in_datastore"]
+      replicate         = disk.value["replicate"]
+      serial            = disk.value["serial"]
+      size              = disk.value["size"]
       # speed        = disk.value["speed"]
       ssd = disk.value["ssd"]
+    }
+  }
+
+  dynamic "disk" {
+    for_each = try(local.persistent_disks[each.key], [])
+    iterator = persistent_disk
+
+    content {
+      aio               = persistent_disk.value["aio"]
+      backup            = persistent_disk.value["backup"]
+      cache             = persistent_disk.value["cache"]
+      datastore_id      = proxmox_virtual_environment_vm.persistent_disk_owner[each.key].disk[persistent_disk.key].datastore_id
+      discard           = persistent_disk.value["discard"]
+      file_format       = proxmox_virtual_environment_vm.persistent_disk_owner[each.key].disk[persistent_disk.key].file_format
+      interface         = persistent_disk.value["interface"]
+      iothread          = persistent_disk.value["iothread"]
+      path_in_datastore = proxmox_virtual_environment_vm.persistent_disk_owner[each.key].disk[persistent_disk.key].path_in_datastore
+      replicate         = persistent_disk.value["replicate"]
+      serial            = persistent_disk.value["serial"]
+      size              = proxmox_virtual_environment_vm.persistent_disk_owner[each.key].disk[persistent_disk.key].size
+      # speed           = persistent_disk.value["speed"]
+      ssd = persistent_disk.value["ssd"]
     }
   }
 

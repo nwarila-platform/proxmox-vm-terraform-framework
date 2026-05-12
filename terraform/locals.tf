@@ -7,7 +7,7 @@ locals {
 }
 
 locals {
-  virtual_machines = {
+  virtual_machine_definitions = {
     for system in var.all_systems : system.name => {
 
       /* Required Parameters */
@@ -18,13 +18,14 @@ locals {
       vm_id     = system.vm_id
 
       /* Optional Parameters */
-      acpi         = system.acpi
-      agent        = system.agent
-      amd_sev      = system.amd_sev
-      audio_device = system.audio_device
-      bios         = system.bios
-      boot_order   = system.boot_order
-      cdrom        = system.cdrom
+      acpi                                 = system.acpi
+      agent                                = system.agent
+      amd_sev                              = system.amd_sev
+      audio_device                         = system.audio_device
+      bios                                 = system.bios
+      boot_order                           = system.boot_order
+      cdrom                                = system.cdrom
+      delete_unreferenced_disks_on_destroy = system.delete_unreferenced_disks_on_destroy
       clone = {
         # datastore_id = <! Note No Way To Pull This From Template !>
         full      = try(system.clone.full, null)
@@ -40,24 +41,27 @@ locals {
           interface = coalesce(disk.interface, "scsi${index}")
         })
       ]
-      efi_disk            = system.efi_disk # This probably needs to be a merge?
-      hostpcis            = system.hostpcis
-      initialization      = system.initialization
-      keyboard_layout     = system.keyboard_layout
-      kvm_arguments       = system.kvm_arguments
-      machine             = system.machine
-      memory              = system.memory
-      migrate             = system.migrate
-      network_devices     = system.network_devices
-      numa                = system.numa
-      on_boot             = system.on_boot
-      operating_system    = system.operating_system
-      protection          = system.protection
-      reboot              = system.reboot
-      reboot_after_update = system.reboot_after_update
-      rng                 = system.rng
-      scsi_hardware       = system.scsi_hardware
-      serial_devices      = system.serial_devices
+      efi_disk                = system.efi_disk # This probably needs to be a merge?
+      hostpcis                = system.hostpcis
+      initialization          = system.initialization
+      keyboard_layout         = system.keyboard_layout
+      kvm_arguments           = system.kvm_arguments
+      machine                 = system.machine
+      memory                  = system.memory
+      migrate                 = system.migrate
+      network_devices         = system.network_devices
+      numa                    = system.numa
+      on_boot                 = system.on_boot
+      operating_system        = system.operating_system
+      persistent_disk_vm_id   = coalesce(system.persistent_disk_vm_id, system.vm_id + var.persistent_disk_vm_id_offset)
+      persistent_disk_vm_name = coalesce(system.persistent_disk_vm_name, "${system.name}-persistent-disks")
+      protection              = system.protection
+      purge_on_destroy        = system.purge_on_destroy
+      reboot                  = system.reboot
+      reboot_after_update     = system.reboot_after_update
+      rng                     = system.rng
+      scsi_hardware           = system.scsi_hardware
+      serial_devices          = system.serial_devices
       # smbios            = coalesce(local.vm_templates[system.operating_system].smbios, null)
       started             = system.started
       startup             = system.startup
@@ -77,5 +81,38 @@ locals {
       virtiofs            = system.virtiofs
       watchdog            = system.watchdog
     }
+  }
+
+  persistent_disks = {
+    for name, vm in local.virtual_machine_definitions : name => [
+      for disk in vm.disks : disk
+      if disk.persist_disk
+    ]
+    if length([
+      for disk in vm.disks : disk
+      if disk.persist_disk
+    ]) > 0
+  }
+
+  persistent_disk_owners = {
+    for name, vm in local.virtual_machine_definitions : name => {
+      name          = vm.persistent_disk_vm_name
+      node_name     = vm.node_name
+      pool_id       = vm.pool_id
+      vm_id         = vm.persistent_disk_vm_id
+      scsi_hardware = vm.scsi_hardware
+      tags          = distinct(compact(concat(coalesce(vm.tags, []), ["persistent-disks"])))
+      disks         = local.persistent_disks[name]
+    }
+    if contains(keys(local.persistent_disks), name)
+  }
+
+  virtual_machines = {
+    for name, vm in local.virtual_machine_definitions : name => merge(vm, {
+      disks = [
+        for disk in vm.disks : disk
+        if !disk.persist_disk
+      ]
+    })
   }
 }
