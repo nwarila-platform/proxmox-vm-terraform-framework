@@ -95,6 +95,16 @@ variable "all_systems" {
           enabled = optional(bool, true)
         })
       )
+      ansible = optional(
+        object({
+          groups    = optional(list(string), [])
+          host_vars = optional(any, {})
+        }),
+        {
+          groups    = []
+          host_vars = {}
+        }
+      )
       bios       = optional(string, "ovmf")
       boot_order = optional(list(string), [])
       cdrom = optional(
@@ -308,4 +318,12 @@ variable "all_systems" {
       )
     })
   )
+}
+
+variable "ansible_inventory_all_vars" {
+  type = any
+  default = {
+    ansible_connection = "ssh"
+  }
+  description = "Variables rendered under the generated Ansible inventory all.vars block."
 }
