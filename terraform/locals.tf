@@ -1,8 +1,8 @@
 locals {
   # Define All Available Virtual Machine Images
   vm_templates = {
-    "rocky_linux_8_x64" = data.proxmox_virtual_environment_vms.rocky_linux_8_disa_stig.vms[0]
-    "rocky_linux_9_x64" = data.proxmox_virtual_environment_vms.rocky_linux_9_disa_stig.vms[0]
+    "rocky_linux_8_x64" = try(data.proxmox_virtual_environment_vms.rocky_linux_8_disa_stig.vms[0], null)
+    "rocky_linux_9_x64" = try(data.proxmox_virtual_environment_vms.rocky_linux_9_disa_stig.vms[0], null)
   }
 }
 
@@ -26,7 +26,7 @@ locals {
       boot_order                           = system.boot_order
       cdrom                                = system.cdrom
       delete_unreferenced_disks_on_destroy = system.delete_unreferenced_disks_on_destroy
-      clone = {
+      clone = lookup(local.vm_templates, system.template, null) == null ? null : {
         # datastore_id = <! Note No Way To Pull This From Template !>
         full      = try(system.clone.full, null)
         node_name = local.vm_templates[system.template]["node_name"]
