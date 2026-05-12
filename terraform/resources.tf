@@ -123,7 +123,7 @@ resource "proxmox_virtual_environment_vm" "virtual_machine" {
       datastore_id      = proxmox_virtual_environment_vm.persistent_disk_owner[each.key].disk[persistent_disk.key].datastore_id
       discard           = persistent_disk.value["discard"]
       file_format       = proxmox_virtual_environment_vm.persistent_disk_owner[each.key].disk[persistent_disk.key].file_format
-      interface         = persistent_disk.value["attach_interface"]
+      interface         = persistent_disk.value["interface"]
       iothread          = persistent_disk.value["iothread"]
       path_in_datastore = proxmox_virtual_environment_vm.persistent_disk_owner[each.key].disk[persistent_disk.key].path_in_datastore
       replicate         = persistent_disk.value["replicate"]
