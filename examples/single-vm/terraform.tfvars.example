@@ -58,6 +58,13 @@ all_systems = [
       enabled = true
     }
 
+    ansible = {
+      groups = ["example"]
+      host_vars = {
+        ansible_user = "automation"
+      }
+    }
+
     tags     = ["example", "ubuntu"]
     on_boot  = true
     started  = true

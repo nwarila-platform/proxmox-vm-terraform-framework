@@ -44,6 +44,23 @@ variables {
           persist_disk = true
         }
       ]
+
+      network_devices = [
+        {
+          ipv4_address       = "10.0.10.50"
+          ipv4_prefix_length = 24
+          ipv4_gateway       = "10.0.10.1"
+        }
+      ]
+
+      ansible = {
+        groups = ["indexers", "servers"]
+        host_vars = {
+          ansible_user      = "automation"
+          wazuh_data_mount  = "/mnt/data"
+          wazuh_data_fstype = "xfs"
+        }
+      }
     }
   ]
 }
@@ -74,5 +91,20 @@ run "persistent_disk_creates_protected_owner_vm" {
   assert {
     condition     = length(proxmox_virtual_environment_vm.virtual_machine["persistent-case"].disk) == 2
     error_message = "workload VM should keep the OS disk and attach the persistent data disk."
+  }
+
+  assert {
+    condition     = output.ansible_hosts["persistent-case"].ansible_user == "automation"
+    error_message = "ansible_hosts should include runner-supplied host vars."
+  }
+
+  assert {
+    condition     = output.ansible_inventory["indexers"].hosts["persistent-case"].ansible_host == "10.0.10.50"
+    error_message = "ansible_inventory should place the host in each configured group."
+  }
+
+  assert {
+    condition     = strcontains(output.ansible_inventory_yaml, "\"servers\":")
+    error_message = "ansible_inventory_yaml should render configured groups."
   }
 }

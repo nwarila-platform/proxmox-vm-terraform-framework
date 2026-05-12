@@ -50,6 +50,10 @@ all_systems = [
       }
     ]
 
+    ansible = {
+      groups = ["utility"]
+    }
+
     tags    = ["utility", "debian"]
     on_boot = true
     started = true
@@ -111,6 +115,13 @@ all_systems = [
     agent = {
       enabled = true
       timeout = "5m"
+    }
+
+    ansible = {
+      groups = ["workloads", "production"]
+      host_vars = {
+        ansible_user = "automation"
+      }
     }
 
     startup = {
