@@ -21,6 +21,7 @@ locals {
       acpi                                 = system.acpi
       agent                                = system.agent
       amd_sev                              = system.amd_sev
+      ansible                              = system.ansible
       audio_device                         = system.audio_device
       bios                                 = system.bios
       boot_order                           = system.boot_order
@@ -115,4 +116,42 @@ locals {
       ]
     })
   }
+
+  ansible_hosts = {
+    for name, vm in local.virtual_machines : name => merge(
+      {
+        ansible_host = try(
+          split("/", compact([
+            for network_device in coalesce(vm.network_devices, []) :
+            network_device.ipv4_address != null ? network_device.ipv4_address : ""
+          ])[0])[0],
+          null
+        )
+        node_name = vm.node_name
+        vm_id     = vm.vm_id
+      },
+      try(vm.ansible.host_vars, {})
+    )
+  }
+
+  ansible_groups = distinct(flatten([
+    for vm in local.virtual_machines : try(vm.ansible.groups, [])
+  ]))
+
+  ansible_inventory = merge(
+    {
+      all = {
+        vars = var.ansible_inventory_all_vars
+      }
+    },
+    {
+      for group in local.ansible_groups : group => {
+        hosts = {
+          for name, vm in local.virtual_machines :
+          name => local.ansible_hosts[name]
+          if contains(try(vm.ansible.groups, []), group)
+        }
+      }
+    }
+  )
 }
