@@ -439,4 +439,11 @@ resource "proxmox_virtual_environment_vm" "virtual_machine" {
 
   #endregion --- [ Conditional Block Properties ] ------------------------------------------- #
 
+  lifecycle {
+    precondition {
+      condition     = lookup(local.vm_templates, each.value["template"], null) != null
+      error_message = "Template key '${each.value["template"]}' did not match an available Proxmox template visible to this API token."
+    }
+  }
+
 }
