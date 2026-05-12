@@ -1,6 +1,7 @@
 locals {
   # Define All Available Virtual Machine Images
   vm_templates = {
+    "rocky_linux_8_x64" = data.proxmox_virtual_environment_vms.rocky_linux_8_disa_stig.vms[0]
     "rocky_linux_9_x64" = data.proxmox_virtual_environment_vms.rocky_linux_9_disa_stig.vms[0]
   }
 }
@@ -31,9 +32,14 @@ locals {
         retries   = try(system.clone.retries, null)
         vm_id     = local.vm_templates[system.template]["vm_id"]
       }
-      cpu                 = system.cpu
-      description         = system.description
-      disks               = system.disks
+      cpu         = system.cpu
+      description = system.description
+      disks = [
+        for index, disk in coalesce(system.disks, []) :
+        merge(disk, {
+          interface = coalesce(disk.interface, "scsi${index}")
+        })
+      ]
       efi_disk            = system.efi_disk # This probably needs to be a merge?
       hostpcis            = system.hostpcis
       initialization      = system.initialization
