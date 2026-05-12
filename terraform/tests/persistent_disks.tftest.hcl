@@ -36,12 +36,13 @@ variables {
           size         = 32
         },
         {
-          interface    = "scsi1"
-          datastore_id = "local-lvm"
-          file_format  = "raw"
-          serial       = "persistent-data"
-          size         = 128
-          persist_disk = true
+          interface        = "scsi1"
+          attach_interface = "scsi4"
+          datastore_id     = "local-lvm"
+          file_format      = "raw"
+          serial           = "persistent-data"
+          size             = 128
+          persist_disk     = true
         }
       ]
     }
@@ -74,5 +75,15 @@ run "persistent_disk_creates_protected_owner_vm" {
   assert {
     condition     = length(proxmox_virtual_environment_vm.virtual_machine["persistent-case"].disk) == 2
     error_message = "workload VM should keep the OS disk and attach the persistent data disk."
+  }
+
+  assert {
+    condition     = proxmox_virtual_environment_vm.persistent_disk_owner["persistent-case"].disk[0].interface == "scsi1"
+    error_message = "owner VM should keep the persistent disk on its owner interface."
+  }
+
+  assert {
+    condition     = proxmox_virtual_environment_vm.virtual_machine["persistent-case"].disk[1].interface == "scsi4"
+    error_message = "workload VM should attach the persistent disk on attach_interface when set."
   }
 }

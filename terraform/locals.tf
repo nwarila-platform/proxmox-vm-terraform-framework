@@ -38,7 +38,8 @@ locals {
       disks = [
         for index, disk in coalesce(system.disks, []) :
         merge(disk, {
-          interface = coalesce(disk.interface, "scsi${index}")
+          attach_interface = coalesce(disk.attach_interface, disk.interface, "scsi${index}")
+          interface        = coalesce(disk.interface, "scsi${index}")
         })
       ]
       efi_disk                = system.efi_disk # This probably needs to be a merge?
