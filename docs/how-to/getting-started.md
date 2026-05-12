@@ -70,6 +70,37 @@ terraform validate
 
 ---
 
+## Preserving data disks across VM rebuilds
+
+Set `persist_disk = true` on any disk that should survive replacement of the
+workload VM. The framework creates a protected, stopped owner VM for those
+disks and attaches them back to the workload VM by `path_in_datastore`.
+
+```hcl
+disks = [
+  {
+    interface    = "scsi0"
+    size         = 32
+    datastore_id = "local-lvm"
+    file_format  = "raw"
+  },
+  {
+    interface    = "scsi1"
+    size         = 128
+    datastore_id = "local-lvm"
+    file_format  = "raw"
+    serial       = "example-data"
+    persist_disk = true
+  }
+]
+```
+
+Persistent owner VM IDs default to `vm_id + persistent_disk_vm_id_offset`
+(`10000`). Override `persistent_disk_vm_id` on a system when that derived ID
+would collide with another VM.
+
+---
+
 ## VS Code tasks
 
 The workspace includes a **Full Validation** task (`Ctrl+Shift+B`) that chains:

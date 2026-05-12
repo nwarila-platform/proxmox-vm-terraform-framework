@@ -31,9 +31,18 @@ all_systems = [
 
     disks = [
       {
+        interface    = "scsi0"
         size         = 32
         datastore_id = "local-lvm"
         file_format  = "raw"
+      },
+      {
+        interface    = "scsi1"
+        size         = 128
+        datastore_id = "local-lvm"
+        file_format  = "raw"
+        serial       = "example-data"
+        persist_disk = true
       }
     ]
 

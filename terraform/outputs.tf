@@ -15,3 +15,14 @@ output "ansible_hosts" {
     }
   }
 }
+
+output "persistent_disk_owners" {
+  description = "Protected helper VMs that own disks declared with persist_disk=true."
+  value = {
+    for name, owner in local.persistent_disk_owners : name => {
+      name      = owner.name
+      node_name = owner.node_name
+      vm_id     = owner.vm_id
+    }
+  }
+}
