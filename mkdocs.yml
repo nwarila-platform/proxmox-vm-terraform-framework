@@ -71,10 +71,16 @@ extra:
       name: NWarila on GitHub
 
 nav:
-  - Home: index.md
-  - Getting Started: getting-started.md
-  - Architecture: architecture.md
-  - Module Reference: TERRAFORM.md
-  - Security Report: security.md
-  - Changelog: changelog.md
-  - Contributing: contributing.md
+  - Home: README.md
+  - Getting Started: how-to/getting-started.md
+  - Develop This Module: how-to/develop-this-module.md
+  - Architecture: explanation/architecture.md
+  - Testing Strategy: explanation/testing-strategy.md
+  - Threat Model: explanation/threat-model.md
+  - Invariants: reference/invariants.md
+  - Release Gates: reference/release-gates.md
+  - Module Reference: reference/terraform.md
+  - Decision Records: decision-records/README.md
+  - Security Report: reference/security.md
+  - Changelog: reference/changelog.md
+  - Contributing: how-to/contributing.md

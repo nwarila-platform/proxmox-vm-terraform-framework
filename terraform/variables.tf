@@ -57,7 +57,7 @@ variable "persistent_disk_vm_id_offset" {
 #endregion --- [ Promox Virtual Environment Systems Variable Definitions ] -------------------- #
 
 variable "all_systems" {
-  description = ""
+  description = "List of Proxmox VM definitions. Each object declares the VM identity, target node/pool/template, optional devices, network settings, persistent-disk behavior, and Ansible inventory metadata."
 
   type = list(
     object({
@@ -109,6 +109,7 @@ variable "all_systems" {
       boot_order = optional(list(string), [])
       cdrom = optional(
         object({
+          enabled   = optional(bool, true)
           file_id   = optional(string, "cdrom")
           interface = optional(string, "ide3")
         })
@@ -162,9 +163,10 @@ variable "all_systems" {
       )
       efi_disk = optional(
         object({
-          datastore_id = optional(string, "nvme-pool")
-          file_format  = optional(string, "raw")
-          type         = optional(string, "2m")
+          datastore_id      = optional(string, "nvme-pool")
+          file_format       = optional(string, "raw")
+          pre_enrolled_keys = optional(bool)
+          type              = optional(string, "2m")
         })
       )
       hostpcis = optional(
@@ -307,6 +309,7 @@ variable "all_systems" {
           direct_io    = optional(bool)
           expose_acl   = optional(bool)
           expose_xattr = optional(bool)
+          mapping      = optional(string)
         })
       )
       watchdog = optional(

@@ -16,7 +16,7 @@
       "version": "latest"
     },
     "ghcr.io/devcontainers-contrib/features/terraform-asdf:2": {
-      "version": "1.14.6"
+      "version": "1.15.2"
     },
     "ghcr.io/devcontainers-contrib/features/tflint:1": {
       "version": "0.61.0"

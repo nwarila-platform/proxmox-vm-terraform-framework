@@ -215,7 +215,7 @@ proxmox-vm-terraform-framework/
 │
 ├── .editorconfig
 ├── .gitignore
-├── .pre-commit.config.yaml
+├── .pre-commit-config.yaml
 ├── release-please-config.json
 └── .release-please-manifest.json
 ```

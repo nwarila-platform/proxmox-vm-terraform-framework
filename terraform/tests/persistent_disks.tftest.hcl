@@ -28,6 +28,12 @@ variables {
       template  = "rocky_linux_8_x64"
       vm_id     = 200
 
+      cdrom = {
+        enabled   = true
+        file_id   = "local:iso/rocky.iso"
+        interface = "ide2"
+      }
+
       disks = [
         {
           interface    = "scsi0"
@@ -45,6 +51,13 @@ variables {
         }
       ]
 
+      efi_disk = {
+        datastore_id      = "local-lvm"
+        file_format       = "raw"
+        pre_enrolled_keys = true
+        type              = "4m"
+      }
+
       network_devices = [
         {
           ipv4_address       = "10.0.10.50"
@@ -60,6 +73,14 @@ variables {
           wazuh_data_mount  = "/mnt/data"
           wazuh_data_fstype = "xfs"
         }
+      }
+
+      virtiofs = {
+        cache        = "always"
+        direct_io    = false
+        expose_acl   = false
+        expose_xattr = true
+        mapping      = "shared"
       }
     }
   ]
@@ -91,6 +112,21 @@ run "persistent_disk_creates_protected_owner_vm" {
   assert {
     condition     = length(proxmox_virtual_environment_vm.virtual_machine["persistent-case"].disk) == 2
     error_message = "workload VM should keep the OS disk and attach the persistent data disk."
+  }
+
+  assert {
+    condition     = proxmox_virtual_environment_vm.virtual_machine["persistent-case"].cdrom[0].enabled == true
+    error_message = "cdrom.enabled should be accepted by the variable schema and rendered into the VM."
+  }
+
+  assert {
+    condition     = proxmox_virtual_environment_vm.virtual_machine["persistent-case"].efi_disk[0].pre_enrolled_keys == true
+    error_message = "efi_disk.pre_enrolled_keys should be accepted by the variable schema and rendered into the VM."
+  }
+
+  assert {
+    condition     = proxmox_virtual_environment_vm.virtual_machine["persistent-case"].virtiofs[0].mapping == "shared"
+    error_message = "virtiofs.mapping should be accepted by the variable schema and rendered into the VM."
   }
 
   assert {

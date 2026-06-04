@@ -25,21 +25,23 @@
 !.editorconfig
 !.gitattributes
 !.gitignore
-!.pre-commit.config.yaml
+!.pre-commit-config.yaml
 !.release-please-manifest.json
 !CHANGELOG.md
+!CODE_OF_CONDUCT.md
+!CONTRIBUTING.md
 !LICENSE
 !mkdocs.yml
 !README.md
 !release-please-config.json
+!SECURITY.md
+!SUPPORT.md
 
 # -------------------------------------------------------------------------- #
 #  Linter & tool configuration                                               #
 # -------------------------------------------------------------------------- #
 !.config/
 !.config/.markdownlint.json
-!.config/.terraform-docs.yml
-!.config/.tflint.hcl
 !.config/.yamllint.yaml
 
 # -------------------------------------------------------------------------- #
@@ -118,6 +120,7 @@
 #  Terraform                                                                  #
 # -------------------------------------------------------------------------- #
 !terraform/
+!terraform/.terraform.lock.hcl
 !terraform/backend.tf
 !terraform/data.tf
 !terraform/locals.tf
@@ -127,14 +130,16 @@
 !terraform/variables.tf
 !terraform/versions.tf
 
-# Additions for terraform-template sync (Makefile, configs, helpers).
+# Additions for terraform-framework-template sync (Makefile, configs, helpers).
 !.terraform-docs.yml
 !.tflint.hcl
 !.pre-commit-config.yaml
 !.markdownlint-cli2.jsonc
 !Makefile
 !tools/
+!tools/build_plan_input.py
 !tools/check_docs_layout.py
+!tools/check_terraform_version_pin.py
 
 # Contract files (seeded by seed_consumer.py)
 !terraform/tests/
@@ -149,6 +154,9 @@
 !docs/reference/terraform.md
 !docs/reference/release-gates.md
 !docs/reference/invariants.md
+!docs/reference/security.md
+!docs/reference/changelog.md
+!docs/how-to/contributing.md
 !docs/how-to/
 !docs/how-to/develop-this-module.md
 !docs/decision-records/
@@ -156,6 +164,8 @@
 !policies/
 !policies/opa/
 !policies/opa/.gitkeep
+!policies/opa/terraform_plan.rego
+!policies/opa/terraform_plan_test.rego
 !.github/PULL_REQUEST_TEMPLATE.md
 # Diatáxis docs migration
 !docs/how-to/getting-started.md
