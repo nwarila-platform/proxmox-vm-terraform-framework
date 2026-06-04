@@ -8,5 +8,5 @@ PRs to `main` must pass:
   markdownlint)
 - Reusable IaC security gates (Trivy, Gitleaks, zizmor)
 
-All gates run via `NWarila/terraform-template` reusable workflows and
+All gates run via `NWarila/terraform-framework-template` reusable workflows and
 must be SHA-pinned per the contract.

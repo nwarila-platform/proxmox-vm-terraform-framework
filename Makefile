@@ -1,5 +1,7 @@
 PYTHON ?= python3
 
+.PHONY: fmt fmt-check init validate test docs docs-diff graph docs-check tflint opa-test opa-plan version-check ci
+
 # Mutating: rewrites HCL in place. Use locally before committing.
 fmt:
 	terraform -chdir=terraform fmt -recursive
@@ -37,7 +39,16 @@ tflint:
 opa-test:
 	opa test policies/opa
 
+opa-plan:
+	mkdir -p .tmp/opa-plan
+	terraform -chdir=terraform test -json -verbose > .tmp/opa-plan/terraform-test.jsonl
+	$(PYTHON) tools/build_plan_input.py < .tmp/opa-plan/terraform-test.jsonl | opa eval --fail-defined --format pretty --stdin-input --data policies/opa 'data.terraform_plan.deny[_]'
+
+version-check:
+	$(PYTHON) tools/check_terraform_version_pin.py
+
 ci:
+	$(MAKE) version-check
 	$(MAKE) fmt-check
 	$(MAKE) init
 	$(MAKE) validate
@@ -46,3 +57,4 @@ ci:
 	$(MAKE) docs-diff
 	$(MAKE) docs-check
 	$(MAKE) opa-test
+	$(MAKE) opa-plan

@@ -2,10 +2,10 @@
 
 ## Local setup
 
-Use the devcontainer in [`nwarila/terraform-template/.devcontainer`](https://github.com/NWarila/terraform-template/tree/main/.devcontainer)
+Use the devcontainer in [`NWarila/terraform-framework-template/.devcontainer`](https://github.com/NWarila/terraform-framework-template/tree/main/.devcontainer)
 or install the same pinned tools manually:
 
-- Terraform 1.15.1
+- Terraform 1.15.2
 - TFLint 0.59.1
 - terraform-docs 0.20.0
 - OPA 1.10.0
