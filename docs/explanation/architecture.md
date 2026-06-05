@@ -33,8 +33,8 @@ flowchart TD
 
         subgraph ci["CI Workflows (parallel)"]
             direction LR
-            WF1["Terraform Validator\n─────────────\nfmt · init · validate\nself-hosted runner\nLinux + Windows"]
-            WF2["Security Scanning\n─────────────\nTrivy SARIF\nCheckov SARIF\nGitleaks"]
+            WF1["PR Validation\n─────────────\nreusable validation\nmake ci gates"]
+            WF2["Security Scanning\n─────────────\nTrivy SARIF\nGitleaks SARIF\nzizmor SARIF"]
             WF3["Deploy Docs\n─────────────\nterraform-docs\nTrivy report\nMkDocs build"]
             WF4["Release Please\n─────────────\nparse commits\nopen release PR"]
             WF5["CodeQL\n─────────────\nSAST scan\nweekly + on push"]
@@ -90,7 +90,7 @@ sequenceDiagram
     end
 
     GH->>CI: Trigger workflows (parallel)
-    CI->>CI: Terraform Validator
+    CI->>CI: PR Validation
     CI->>CI: Security Scanning → Security tab
     CI->>CI: Deploy Docs → GitHub Pages
     CI->>CI: Release Please
@@ -159,20 +159,20 @@ flowchart LR
 
     subgraph L2["Layer 2 — CI (every push)"]
         S4["Trivy SARIF\n→ Security tab"]
-        S5["Checkov\nIaC compliance"]
+        S5["zizmor\nActions posture"]
         S6["Gitleaks\nfull history scan"]
     end
 
     subgraph L3["Layer 3 — Continuous (weekly)"]
         S7["CodeQL SAST\nworkflow scanning"]
         S8["Security Scanning\nscheduled full scan"]
-        S9["Dependabot\ndependency updates"]
+        S9["Renovate\ndependency updates"]
     end
 
     subgraph L4["Layer 4 — Supply Chain"]
         S10["Pinned Action SHAs\nno floating tags"]
         S11["persist-credentials: false\nno token leakage"]
-        S12["Dependabot\nprovider + action versions"]
+        S12["Renovate\nprovider + action versions"]
     end
 
     L1 -->|"blocked at commit"| L2
@@ -197,20 +197,20 @@ proxmox-vm-terraform-framework/
 │   │   └── terraform-powershell/  # Composite action — Windows runner
 │   ├── ISSUE_TEMPLATE/            # Structured bug + feature request forms
 │   ├── workflows/
-│   │   ├── terraform.yaml         # Format + validate on push
-│   │   ├── security.yaml          # Trivy + Checkov + Gitleaks → SARIF
+│   │   ├── pr-validation.yaml     # Reusable Terraform validation
+│   │   ├── security.yaml          # Trivy + Gitleaks + zizmor → SARIF
 │   │   ├── pages.yaml             # MkDocs build + GitHub Pages deploy
 │   │   ├── release-please.yaml    # Automated versioning + changelog
 │   │   └── codeql.yaml            # SAST — weekly + on push
 │   ├── CODEOWNERS
-│   ├── dependabot.yml             # 5 ecosystems monitored
-│   └── pull_request_template.md
+│   ├── renovate.json5             # Dependency update policy
+│   └── PULL_REQUEST_TEMPLATE.md
 │
 ├── .config/                # Tool configurations (linters, formatters, docs)
 ├── .vscode/                # Workspace settings + tasks
 ├── docs/                   # MkDocs source (deployed to GitHub Pages)
 ├── examples/               # Usage examples for consumers
-├── requirements/           # Pinned Python deps (Dependabot-monitored)
+├── requirements/           # Pinned Python deps (Renovate-monitored)
 ├── terraform/              # Core Terraform configuration
 │
 ├── .editorconfig

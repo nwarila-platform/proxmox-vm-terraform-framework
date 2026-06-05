@@ -9,7 +9,7 @@
   // Rules in this file:
   //   - Pin third-party GitHub Actions to commit SHAs (matches the OPA
   //     golden_terraform package's enforcement).
-  //   - Pin Terraform and provider versions exactly (org ADR 0005).
+  //   - Pin Terraform and provider versions exactly per the framework exact-pin contract.
   //   - Track explicit `# renovate:` annotations in workflow comments for
   //     tool versions (Terraform CLI, TFLint, terraform-docs, OPA, zizmor).
 
@@ -40,11 +40,15 @@
       "customType": "regex",
       "managerFilePatterns": [
         "/^\\.github/workflows/.*\\.ya?ml$/",
+        "/^\\.devcontainer/devcontainer\\.json$/",
+        "/^\\.tflint\\.hcl$/",
         "/^tools/.*\\.sh$/"
       ],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: packageName=(?<packageName>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?\\s+\\w+(?:_VERSION)?:\\s*\"(?<currentValue>[^\"]+)\"",
         "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: packageName=(?<packageName>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?\\s+\\w+_VERSION=\"(?<currentValue>[^\"]+)\"",
+        "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: packageName=(?<packageName>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?\\s+\"version\":\\s*\"(?<currentValue>[^\"]+)\"",
+        "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: packageName=(?<packageName>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?\\s+required_version\\s*=\\s*\"=\\s*(?<currentValue>[^\"]+)\"",
         "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: packageName=(?<packageName>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?\\s+pip install --no-cache-dir (?<depName2>[a-zA-Z0-9-._]+)==(?<currentValue>[^\\s]+)"
       ]
     }
@@ -70,8 +74,17 @@
       "semanticCommitScope": "deps"
     },
     {
-      "matchDepNames": ["NWarila/terraform-framework-template"],
-      "groupName": "terraform-framework-template",
+      "matchDepNames": ["terraform-linters/tflint"],
+      "groupName": "TFLint",
+      "semanticCommitType": "deps",
+      "semanticCommitScope": "deps"
+    },
+    {
+      "matchDepNames": [
+        "NWarila/drift-gate",
+        "NWarila/terraform-framework-template"
+      ],
+      "groupName": "first-party workflow pins",
       "semanticCommitType": "chore",
       "semanticCommitScope": "deps",
       "automerge": false

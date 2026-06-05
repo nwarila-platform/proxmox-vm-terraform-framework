@@ -1,6 +1,32 @@
+---
 repos:
   - repo: local
     hooks:
+      - id: conventional-pre-commit
+        name: conventional commit message
+        entry: conventional-pre-commit
+        language: system
+        pass_filenames: false
+        stages: [commit-msg]
+
+      - id: detect-private-key
+        name: detect private key
+        entry: detect-private-key
+        language: system
+        files: .*
+
+      - id: yamllint
+        name: yamllint
+        entry: python -m yamllint --config-file .config/.yamllint.yaml
+        language: system
+        files: \.(yaml|yml)$
+
+      - id: markdownlint
+        name: markdownlint
+        entry: markdownlint-cli2 --config .config/.markdownlint.json
+        language: system
+        files: \.md$
+
       - id: terraform_fmt
         name: terraform fmt
         entry: terraform -chdir=terraform fmt -recursive
@@ -10,7 +36,9 @@ repos:
 
       - id: terraform_validate
         name: terraform validate
-        entry: bash -c "terraform -chdir=terraform init -backend=false -input=false && terraform -chdir=terraform validate"
+        entry: >-
+          bash -c "terraform -chdir=terraform init -backend=false -input=false
+          && terraform -chdir=terraform validate"
         language: system
         pass_filenames: false
         files: ^terraform/.*\.tf$
@@ -38,7 +66,9 @@ repos:
 
       - id: terraform_docs
         name: terraform-docs
-        entry: terraform-docs markdown table --output-file ../docs/reference/terraform.md --output-mode inject terraform
+        entry: >-
+          terraform-docs markdown table --config .terraform-docs.yml
+          --output-file ../docs/reference/terraform.md --output-mode inject terraform
         language: system
         pass_filenames: false
         files: ^terraform/.*\.tf$

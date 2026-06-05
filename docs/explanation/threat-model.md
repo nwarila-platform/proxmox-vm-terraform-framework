@@ -60,8 +60,9 @@ What this module does **not** guarantee:
 - It does not guarantee that referenced datastores, template keys, mappings, or
   network bridges exist in a live cluster.
 - It does not own backup policy, snapshot retention, or disaster recovery.
-- It does not decide whether the empty OPA policy directory should inherit a
-  central package or carry local policies; that is decision-gated separately.
+- It does not replace operational review for persistent-disk ownership changes;
+  `policies/opa/terraform_plan.rego` enforces that owner VMs remain protected in
+  the generated plan.
 
 Cross-reference: `SECURITY.md` defines the reporting channel and support scope
 for this repository.

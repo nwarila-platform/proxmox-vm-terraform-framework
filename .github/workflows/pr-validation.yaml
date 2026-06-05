@@ -1,3 +1,4 @@
+---
 name: PR Validation
 
 on:
@@ -5,8 +6,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  merge_group:
-  workflow_dispatch:
+  merge_group: {}
+  workflow_dispatch: {}
 
 permissions:
   contents: read
@@ -17,15 +18,16 @@ concurrency:
 
 jobs:
   validate:
-    uses: NWarila/terraform-framework-template/.github/workflows/reusable-terraform-validation.yaml@7ce84506f03cfff4904923724bed9e42804e7644
+    # NWarila/terraform-framework-template main @ 2026-05-27
+    uses: NWarila/terraform-framework-template/.github/workflows/reusable-terraform-validation.yaml@efcf3274d8bc6f4b192be063db8f284db6d9423a
     with:
-      # renovate: datasource=github-releases depName=hashicorp/terraform extractVersion=^v(?<version>.*)$ versioning=hashicorp
+      # renovate: datasource=github-releases depName=hashicorp/terraform extractVersion=^v(?<version>.*)$
       terraform_version: "1.15.2"
       # renovate: datasource=github-releases depName=terraform-linters/tflint extractVersion=^v(?<version>.*)$
-      tflint_version: "0.59.1"
+      tflint_version: "0.62.0"
       # renovate: datasource=github-releases depName=terraform-docs/terraform-docs extractVersion=^v(?<version>.*)$
-      terraform_docs_version: "0.20.0"
+      terraform_docs_version: "0.23.0"
       # renovate: datasource=github-releases depName=open-policy-agent/opa extractVersion=^v(?<version>.*)$
       opa_version: "1.10.0"
-      template_ref: 7ce84506f03cfff4904923724bed9e42804e7644
+      template_ref: efcf3274d8bc6f4b192be063db8f284db6d9423a
       mode: full

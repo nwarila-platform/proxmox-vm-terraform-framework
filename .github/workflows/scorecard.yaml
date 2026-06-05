@@ -1,14 +1,15 @@
+---
 name: Scorecard
 
 on:
-  branch_protection_rule:
+  branch_protection_rule: {}
   schedule:
     - cron: "17 6 * * 2"
   push:
     branches: [main]
-  workflow_dispatch:
+  workflow_dispatch: {}
 
-permissions: read-all
+permissions: {}
 
 concurrency:
   group: scorecard
@@ -17,9 +18,9 @@ concurrency:
 jobs:
   analysis:
     permissions:
-      security-events: write
-      id-token: write
-      actions: read
-      contents: read
-    uses: NWarila/terraform-framework-template/.github/workflows/reusable-scorecard.yaml@7ce84506f03cfff4904923724bed9e42804e7644
-
+      security-events: write # required to upload Scorecard SARIF
+      id-token: write # required by OpenSSF Scorecard tokenless attestation
+      actions: read # required by code-scanning upload metadata
+      contents: read # required by Scorecard repository checks
+    # NWarila/terraform-framework-template main @ 2026-05-27
+    uses: NWarila/terraform-framework-template/.github/workflows/reusable-scorecard.yaml@efcf3274d8bc6f4b192be063db8f284db6d9423a

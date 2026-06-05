@@ -1,3 +1,4 @@
+---
 name: Proxmox Terraform Validation
 description: Validate Terraform formatting and configuration in the framework repository
 

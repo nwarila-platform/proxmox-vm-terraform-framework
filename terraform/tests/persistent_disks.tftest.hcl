@@ -86,6 +86,18 @@ variables {
   ]
 }
 
+run "reject_non_positive_persistent_disk_owner_offset" {
+  command = plan
+
+  variables {
+    persistent_disk_vm_id_offset = 0
+  }
+
+  expect_failures = [
+    var.persistent_disk_vm_id_offset,
+  ]
+}
+
 run "persistent_disk_creates_protected_owner_vm" {
   command = plan
 
@@ -112,6 +124,16 @@ run "persistent_disk_creates_protected_owner_vm" {
   assert {
     condition     = length(proxmox_virtual_environment_vm.virtual_machine["persistent-case"].disk) == 2
     error_message = "workload VM should keep the OS disk and attach the persistent data disk."
+  }
+
+  assert {
+    condition     = proxmox_virtual_environment_vm.persistent_disk_owner["persistent-case"].disk[0].interface == "scsi1"
+    error_message = "owner VM should keep the persistent disk's original interface after the filtered split."
+  }
+
+  assert {
+    condition     = proxmox_virtual_environment_vm.virtual_machine["persistent-case"].disk[1].interface == "scsi1"
+    error_message = "workload VM should reattach the persistent disk by the same interface after the filtered split."
   }
 
   assert {

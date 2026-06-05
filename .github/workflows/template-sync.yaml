@@ -1,13 +1,12 @@
+---
 name: Template Sync
 
 on:
   schedule:
     - cron: "17 6 * * *"
-  workflow_dispatch:
+  workflow_dispatch: {}
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 concurrency:
   group: template-sync
@@ -15,6 +14,10 @@ concurrency:
 
 jobs:
   sync:
-    uses: NWarila/terraform-framework-template/.github/workflows/reusable-template-sync.yaml@7ce84506f03cfff4904923724bed9e42804e7644
+    permissions:
+      contents: write # required for the reusable template sync workflow to update mirrored files
+      pull-requests: write # required for the reusable template sync workflow to open or update sync PRs
+    # NWarila/terraform-framework-template main @ 2026-05-27
+    uses: NWarila/terraform-framework-template/.github/workflows/reusable-template-sync.yaml@efcf3274d8bc6f4b192be063db8f284db6d9423a
     with:
-      template_ref: 7ce84506f03cfff4904923724bed9e42804e7644
+      template_ref: efcf3274d8bc6f4b192be063db8f284db6d9423a
