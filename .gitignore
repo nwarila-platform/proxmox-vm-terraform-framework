@@ -65,26 +65,16 @@
 !.github/ISSUE_TEMPLATE/config.yml
 !.github/ISSUE_TEMPLATE/feature_request.yml
 !.github/CODEOWNERS
-!.github/dependabot.yml
 !.github/FUNDING.yml
-!.github/pull_request_template.md
 !.github/renovate.json5
 !.github/workflows/
-!.github/renovate.json5
 !.github/workflows/codeql.yaml
-!.github/renovate.json5
 !.github/workflows/pages.yaml
-!.github/renovate.json5
 !.github/workflows/release-please.yaml
-!.github/renovate.json5
 !.github/workflows/security.yaml
-!.github/renovate.json5
 !.github/workflows/template-sync.yaml
 !.github/workflows/scorecard.yaml
-!.github/renovate.json5
 !.github/workflows/pr-validation.yaml
-!.github/renovate.json5
-!.github/workflows/terraform.yaml
 
 # -------------------------------------------------------------------------- #
 #  VSCode workspace                                                           #
@@ -133,7 +123,6 @@
 # Additions for terraform-framework-template sync (Makefile, configs, helpers).
 !.terraform-docs.yml
 !.tflint.hcl
-!.pre-commit-config.yaml
 !.markdownlint-cli2.jsonc
 !Makefile
 !tools/
@@ -141,9 +130,8 @@
 !tools/check_docs_layout.py
 !tools/check_terraform_version_pin.py
 
-# Contract files (seeded by seed_consumer.py)
+# Framework contract files
 !terraform/tests/
-!terraform/tests/.gitkeep
 !terraform/tests/*.tftest.hcl
 !docs/README.md
 !docs/explanation/
@@ -163,7 +151,6 @@
 !docs/decision-records/README.md
 !policies/
 !policies/opa/
-!policies/opa/.gitkeep
 !policies/opa/terraform_plan.rego
 !policies/opa/terraform_plan_test.rego
 !.github/PULL_REQUEST_TEMPLATE.md

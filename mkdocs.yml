@@ -1,3 +1,4 @@
+---
 site_name: proxmox-vm-terraform-framework
 site_description: Production-grade Terraform framework for managing Proxmox VE infrastructure
 site_url: https://nwarila-platform.github.io/proxmox-vm-terraform-framework/

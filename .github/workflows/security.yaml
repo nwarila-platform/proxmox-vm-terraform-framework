@@ -1,3 +1,4 @@
+---
 name: Security Scan
 
 on:
@@ -5,10 +6,10 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  merge_group:
+  merge_group: {}
   schedule:
     - cron: "0 8 * * 1"
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 permissions: {}
 
@@ -19,8 +20,8 @@ concurrency:
 jobs:
   scan:
     permissions:
-      contents: read
-      security-events: write
-      actions: read
-    uses: NWarila/terraform-framework-template/.github/workflows/reusable-iac-security.yaml@7ce84506f03cfff4904923724bed9e42804e7644
-
+      contents: read # required by the reusable scanner to inspect repository content
+      security-events: write # required to upload IaC and secret-scan SARIF
+      actions: read # required by CodeQL upload-sarif to associate results with the run
+    # NWarila/terraform-framework-template main @ 2026-05-27
+    uses: NWarila/terraform-framework-template/.github/workflows/reusable-iac-security.yaml@efcf3274d8bc6f4b192be063db8f284db6d9423a

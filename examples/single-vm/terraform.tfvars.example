@@ -9,7 +9,8 @@
 proxmox_hostname         = "10.0.0.10"
 proxmox_api_token_id     = "terraform@pve!automation"
 proxmox_api_token_secret = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-proxmox_skip_tls_verify  = true
+# Keep TLS verification enabled. Use true only for short-lived lab testing with explicit risk acceptance.
+proxmox_skip_tls_verify = false
 
 all_systems = [
   {

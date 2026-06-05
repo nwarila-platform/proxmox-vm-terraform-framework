@@ -1,3 +1,4 @@
+---
 name: Proxmox Terraform Validation
 description: Validate Terraform formatting and configuration in the framework repository
 
@@ -14,7 +15,7 @@ runs:
         Set-Variable -Name:'TerraformCommand' -Value:(
            Get-Command -Name:'terraform' -ErrorAction:'Stop'
         )
-        
+
         Write-Host "Using Terraform executable: $($TerraformCommand.Source)"
 
     - name: Check Terraform formatting

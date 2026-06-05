@@ -5,9 +5,9 @@
 | Tool | Version | Install |
 |---|---|---|
 | Terraform | `= 1.15.2` | [developer.hashicorp.com](https://developer.hashicorp.com/terraform/install) |
-| TFLint | `= 0.61.0` | [github.com/terraform-linters/tflint](https://github.com/terraform-linters/tflint/releases) |
+| TFLint | `= 0.62.0` | [github.com/terraform-linters/tflint](https://github.com/terraform-linters/tflint/releases) |
 | Trivy | latest | [aquasecurity.github.io/trivy](https://aquasecurity.github.io/trivy/latest/getting-started/installation/) |
-| terraform-docs | `>= 0.19.0` | [terraform-docs.io](https://terraform-docs.io/user-guide/installation/) |
+| terraform-docs | `= 0.23.0` | [terraform-docs.io](https://terraform-docs.io/user-guide/installation/) |
 | pre-commit | `>= 4.0.0` | [pre-commit.com](https://pre-commit.com/#install) |
 
 !!! tip "Use the devcontainer"
@@ -20,9 +20,9 @@
 
 1. Install [VS Code](https://code.visualstudio.com/) and the
    [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-2. Clone the repository and open it in VS Code
-3. When prompted, select **Reopen in Container**
-4. All tools are installed and pre-commit hooks are registered automatically
+1. Clone the repository and open it in VS Code
+1. When prompted, select **Reopen in Container**
+1. All tools are installed and pre-commit hooks are registered automatically
 
 ---
 
@@ -106,10 +106,10 @@ would collide with another VM.
 The workspace includes a **Full Validation** task (`Ctrl+Shift+B`) that chains:
 
 1. `terraform fmt --check`
-2. `terraform init`
-3. `terraform validate`
-4. `tflint`
-5. `trivy` security scan
+1. `terraform init`
+1. `terraform validate`
+1. `tflint`
+1. `trivy` security scan
 
 Run individual tasks via `Ctrl+Shift+P` → **Tasks: Run Task**.
 

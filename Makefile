@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: fmt fmt-check init validate test docs docs-diff graph docs-check tflint opa-test opa-plan version-check ci
+.PHONY: fmt fmt-check init validate test docs docs-diff docs-check tflint opa-test opa-plan version-check ci
 
 # Mutating: rewrites HCL in place. Use locally before committing.
 fmt:
@@ -27,14 +27,11 @@ docs:
 docs-diff:
 	terraform-docs --config .terraform-docs.yml --output-check terraform
 
-graph:
-	bash tools/render_graphs.sh
-
 docs-check:
 	$(PYTHON) tools/check_docs_layout.py
 
 tflint:
-	tflint --chdir=terraform
+	tflint --config=../.tflint.hcl --chdir=terraform
 
 opa-test:
 	opa test policies/opa

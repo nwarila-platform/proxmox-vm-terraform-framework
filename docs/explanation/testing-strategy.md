@@ -26,7 +26,8 @@ Terraform graph behavior without contacting a live cluster.
   mappings, pools, or nodes exist.
 - They do not yet cover every optional VM device block.
 - They do not test backup, snapshot, or guest OS hardening behavior.
-- They do not make the currently empty OPA policy directory substantive.
+- The OPA plan policy is intentionally narrow: it verifies the protected
+  persistent-disk owner invariant, not every VM lifecycle risk.
 
 ## Required Expansion
 
