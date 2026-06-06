@@ -23,5 +23,4 @@ jobs:
       contents: read # required by the reusable CodeQL workflow to inspect repository content
       security-events: write # required to upload CodeQL SARIF
       actions: read # required by CodeQL upload-sarif to associate results with the run
-    # NWarila/terraform-framework-template main @ 2026-05-27
-    uses: NWarila/terraform-framework-template/.github/workflows/reusable-codeql.yaml@efcf3274d8bc6f4b192be063db8f284db6d9423a
+    uses: nwarila-platform/.github/.github/workflows/reusable-codeql.yaml@0d2a0752d4c618907d735af4a7c12a9214c8517e

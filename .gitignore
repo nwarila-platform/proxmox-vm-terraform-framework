@@ -72,7 +72,6 @@
 !.github/workflows/pages.yaml
 !.github/workflows/release-please.yaml
 !.github/workflows/security.yaml
-!.github/workflows/template-sync.yaml
 !.github/workflows/scorecard.yaml
 !.github/workflows/pr-validation.yaml
 
@@ -129,6 +128,7 @@
 !tools/build_plan_input.py
 !tools/check_docs_layout.py
 !tools/check_terraform_version_pin.py
+!tools/install_ci_tools.sh
 
 # Framework contract files
 !terraform/tests/
