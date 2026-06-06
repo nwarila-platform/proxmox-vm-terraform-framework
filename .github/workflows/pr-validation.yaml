@@ -18,16 +18,36 @@ concurrency:
 
 jobs:
   validate:
-    # NWarila/terraform-framework-template main @ 2026-05-27
-    uses: NWarila/terraform-framework-template/.github/workflows/reusable-terraform-validation.yaml@efcf3274d8bc6f4b192be063db8f284db6d9423a
-    with:
-      # renovate: datasource=github-releases depName=hashicorp/terraform extractVersion=^v(?<version>.*)$
-      terraform_version: "1.15.2"
-      # renovate: datasource=github-releases depName=terraform-linters/tflint extractVersion=^v(?<version>.*)$
-      tflint_version: "0.62.0"
-      # renovate: datasource=github-releases depName=terraform-docs/terraform-docs extractVersion=^v(?<version>.*)$
-      terraform_docs_version: "0.23.0"
-      # renovate: datasource=github-releases depName=open-policy-agent/opa extractVersion=^v(?<version>.*)$
-      opa_version: "1.10.0"
-      template_ref: efcf3274d8bc6f4b192be063db8f284db6d9423a
-      mode: full
+    name: make ci
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@5e8dbf3c6d9deaf4193ca7a8fb23f2ac83bb6c85 # v4.0.0
+        with:
+          # renovate: datasource=github-releases depName=hashicorp/terraform extractVersion=^v(?<version>.*)$ versioning=hashicorp
+          terraform_version: "1.15.2"
+          terraform_wrapper: false
+
+      - name: Install pinned CI tools
+        env:
+          # renovate: datasource=github-releases depName=rhysd/actionlint extractVersion=^v(?<version>.*)$
+          ACTIONLINT_VERSION: "1.7.12"
+          # renovate: datasource=npm depName=markdownlint-cli2
+          MARKDOWNLINT_CLI2_VERSION: "0.22.1"
+          # renovate: datasource=github-releases depName=terraform-linters/tflint extractVersion=^v(?<version>.*)$
+          TFLINT_VERSION: "0.62.0"
+          # renovate: datasource=github-releases depName=terraform-docs/terraform-docs extractVersion=^v(?<version>.*)$
+          TERRAFORM_DOCS_VERSION: "0.23.0"
+          # renovate: datasource=github-releases depName=open-policy-agent/opa extractVersion=^v(?<version>.*)$
+          OPA_VERSION: "1.10.0"
+        run: bash tools/install_ci_tools.sh
+
+      - name: Run local CI gates
+        run: make ci

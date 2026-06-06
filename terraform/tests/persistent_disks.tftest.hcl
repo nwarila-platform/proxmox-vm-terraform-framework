@@ -137,8 +137,8 @@ run "persistent_disk_creates_protected_owner_vm" {
   }
 
   assert {
-    condition     = proxmox_virtual_environment_vm.virtual_machine["persistent-case"].cdrom[0].enabled == true
-    error_message = "cdrom.enabled should be accepted by the variable schema and rendered into the VM."
+    condition     = proxmox_virtual_environment_vm.virtual_machine["persistent-case"].cdrom[0].file_id == "local:iso/rocky.iso"
+    error_message = "cdrom.enabled=true should keep the configured CD-ROM file attached without rendering the deprecated provider argument."
   }
 
   assert {
