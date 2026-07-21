@@ -179,12 +179,11 @@ Run it with `Ctrl+Shift+B`.
 ### PR Validation (`pr-validation.yaml`)
 
 Triggers on push to `main`, pull requests, merge queue, and manual dispatch.
-Calls the pinned `NWarila/terraform-framework-template` reusable validation
-workflow with the repository's Terraform, TFLint, terraform-docs, and OPA pins.
+Installs the pinned local toolchain and runs `make ci`.
 
 | Step | Action |
 |---|---|
-| Validation | `mode: full` reusable Terraform validation |
+| Validation | Terraform fmt/init/validate/test, TFLint, terraform-docs, docs layout, and OPA gates |
 
 ### Release Please (`release-please.yaml`)
 

@@ -234,8 +234,7 @@ resource "proxmox_virtual_environment_vm" "virtual_machine" {
     iterator = cdrom
 
     content {
-      enabled   = cdrom.value["enabled"]
-      file_id   = cdrom.value["file_id"]
+      file_id   = cdrom.value["enabled"] ? cdrom.value["file_id"] : "none"
       interface = cdrom.value["interface"]
     }
   }
